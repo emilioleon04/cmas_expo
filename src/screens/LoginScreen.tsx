@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  SafeAreaView, 
-  Image, 
-  TouchableOpacity, 
-  TextInput 
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image, TextInput } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
+import { theme } from '../utils/theme';
 
-// Images from Figma
-const logoImage = 'https://www.figma.com/api/mcp/asset/c686b4a0-44e2-44a3-8aaf-d90e5e24bd4f';
-const googleIcon = 'https://www.figma.com/api/mcp/asset/ff8ac70c-f258-4484-8b49-9a6e2fd67ef6';
-const facebookIcon = 'https://www.figma.com/api/mcp/asset/9a83774b-e172-4779-982d-e7ad44605f7b';
+// Images from Figma Login Screen (exact assets)
+const logoText = 'https://www.figma.com/api/mcp/asset/b0e3ea2a-2e02-4fc8-aa10-22ada2d7a4bc';
+const logoIcon = 'https://www.figma.com/api/mcp/asset/a304c2b7-c457-4ecd-969b-23e9b8c54126';
+const facebookIcon = 'https://www.figma.com/api/mcp/asset/5d8b4788-506b-4f91-8baf-1b3a743f1908';
+const googleIcon = 'https://www.figma.com/api/mcp/asset/b40257bc-5c1a-4433-abb4-274136d702f7';
+const appleIcon = 'https://www.figma.com/api/mcp/asset/7908e658-b48c-4f35-95b5-c789c5afb431';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -22,96 +17,90 @@ interface LoginScreenProps {
   navigation: LoginScreenNavigationProp;
 }
 
-export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    navigation.navigate('Balance');
-  };
-
-  const handleGoogleLogin = () => {
-    navigation.navigate('Balance');
-  };
-
-  const handleFacebookLogin = () => {
-    navigation.navigate('Balance');
+    // Simulate login process
+    setTimeout(() => {
+      navigation.navigate('Balance');
+    }, 1000);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Logo */}
-        <View style={styles.logoContainer}>
-          <Image source={{ uri: logoImage }} style={styles.logo} resizeMode="contain" />
+        {/* Logo Section - Single CMAS Logo */}
+        <View style={styles.logoSection}>
+          <Image source={{ uri: logoIcon }} style={styles.logo} resizeMode="contain" />
         </View>
 
-        {/* Welcome Text */}
-        <Text style={styles.welcomeTitle}>Bienvenido</Text>
-        <Text style={styles.welcomeSubtitle}>Inicia sesión para continuar</Text>
-
-        {/* Social Login Buttons */}
-        <View style={styles.socialButtonsContainer}>
-          <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin}>
-            <Image source={{ uri: googleIcon }} style={styles.socialIcon} />
-            <Text style={styles.socialButtonText}>Continuar con Google</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.socialButton} onPress={handleFacebookLogin}>
-            <Image source={{ uri: facebookIcon }} style={styles.socialIcon} />
-            <Text style={styles.socialButtonText}>Continuar con Facebook</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Divider */}
-        <View style={styles.dividerContainer}>
-          <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>O</Text>
-          <View style={styles.dividerLine} />
-        </View>
-
-        {/* Login Form */}
-        <View style={styles.form}>
+        {/* Form Container */}
+        <View style={styles.formContainer}>
+          {/* Email Input */}
           <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Email</Text>
             <TextInput
-              style={styles.input}
-              placeholder="Ingresa tu email"
+              style={styles.textInput}
               value={email}
               onChangeText={setEmail}
+              placeholder="Ingresa tu correo electrónico"
+              placeholderTextColor={theme.colors.textLight}
               keyboardType="email-address"
               autoCapitalize="none"
-              placeholderTextColor="#999999"
             />
+            <View style={styles.underline} />
           </View>
 
+          {/* Password Input */}
           <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Contraseña</Text>
             <TextInput
-              style={styles.input}
-              placeholder="Ingresa tu contraseña"
+              style={styles.textInput}
               value={password}
               onChangeText={setPassword}
+              placeholder="Contraseña"
+              placeholderTextColor={theme.colors.textLight}
               secureTextEntry
-              placeholderTextColor="#999999"
             />
+            <View style={styles.underline} />
           </View>
 
+          {/* Forgot Password */}
           <TouchableOpacity style={styles.forgotPasswordContainer}>
             <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
           </TouchableOpacity>
+        </View>
 
-          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
-          </TouchableOpacity>
+        {/* Login Button */}
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+
+        {/* Social Login */}
+        <View style={styles.socialLoginContainer}>
+          <Text style={styles.orText}>O continúa con</Text>
+          
+          <View style={styles.socialButtonsRow}>
+            <TouchableOpacity style={styles.socialButton}>
+              <Image source={{ uri: facebookIcon }} style={styles.socialIcon} resizeMode="contain" />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.socialButton}>
+              <Image source={{ uri: googleIcon }} style={styles.socialIcon} resizeMode="contain" />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.socialButton}>
+              <Image source={{ uri: appleIcon }} style={styles.socialIcon} resizeMode="contain" />
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Sign Up Link */}
         <View style={styles.signUpContainer}>
-          <Text style={styles.signUpText}>¿No tienes cuenta? </Text>
-          <TouchableOpacity>
-            <Text style={styles.signUpLink}>Regístrate</Text>
-          </TouchableOpacity>
+          <Text style={styles.signUpText}>
+            ¿Aún no tienes cuenta? 
+            <Text style={styles.signUpLink}> Regístrate</Text>
+          </Text>
         </View>
       </View>
     </SafeAreaView>
@@ -126,125 +115,99 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 24,
+    paddingTop: 80,
+    justifyContent: 'flex-start',
   },
-  logoContainer: {
+  logoSection: {
     alignItems: 'center',
-    marginTop: 60,
-    marginBottom: 40,
+    marginBottom: 80,
+    paddingTop: 40,
   },
   logo: {
-    width: 120,
-    height: 80,
+    width: 160,
+    height: 60,
   },
-  welcomeTitle: {
-    fontSize: 26,
-    fontWeight: '700',
-    color: '#00334C',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  welcomeSubtitle: {
-    fontSize: 14,
-    fontWeight: '300',
-    color: '#005882',
-    textAlign: 'center',
-    marginBottom: 32,
-  },
-  socialButtonsContainer: {
-    marginBottom: 24,
-    gap: 12,
-  },
-  socialButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E5E5E5',
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-  },
-  socialIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 12,
-  },
-  socialButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#00334C',
-  },
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 24,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#E5E5E5',
-  },
-  dividerText: {
-    fontSize: 14,
-    color: '#999999',
-    marginHorizontal: 16,
-  },
-  form: {
-    marginBottom: 24,
+  formContainer: {
+    marginBottom: 12,
   },
   inputContainer: {
-    marginBottom: 16,
+    marginBottom: 4,
   },
-  inputLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#00334C',
-    marginBottom: 8,
+  textInput: {
+    fontSize: theme.fontSizes.md,
+    color: theme.colors.text,
+    paddingVertical: 15,
+    paddingHorizontal: 0,
+    backgroundColor: 'transparent',
+    fontFamily: 'Poppins_400Regular',
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#E5E5E5',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 14,
-    backgroundColor: '#FFFFFF',
-    color: '#00334C',
+  underline: {
+    height: 1,
+    backgroundColor: theme.colors.border,
+    marginTop: 2,
   },
   forgotPasswordContainer: {
-    alignItems: 'flex-end',
-    marginBottom: 24,
+    alignSelf: 'flex-end',
+    marginTop: 8,
   },
   forgotPasswordText: {
-    fontSize: 12,
-    color: '#0093D8',
+    color: theme.colors.primary,
+    fontSize: theme.fontSizes.sm,
+    fontFamily: 'Poppins_500Medium',
   },
   loginButton: {
-    backgroundColor: '#006B9E',
-    borderRadius: 12,
+    backgroundColor: theme.colors.primary,
     paddingVertical: 16,
+    borderRadius: theme.borderRadius.md,
     alignItems: 'center',
+    marginBottom: 32,
   },
   loginButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    color: theme.colors.white,
+    fontSize: theme.fontSizes.md,
+    fontFamily: 'Poppins_600SemiBold',
   },
-  signUpContainer: {
+  socialLoginContainer: {
+    alignItems: 'center',
+    marginBottom: 32,
+  },
+  orText: {
+    color: theme.colors.textSecondary,
+    fontSize: theme.fontSizes.sm,
+    fontFamily: 'Poppins_400Regular',
+    marginBottom: 20,
+  },
+  socialButtonsRow: {
     flexDirection: 'row',
     justifyContent: 'center',
+    gap: 16,
+  },
+  socialButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#F8F9FA',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 'auto',
-    marginBottom: 40,
+    borderWidth: 1,
+    borderColor: '#E9ECEF',
+  },
+  socialIcon: {
+    width: 24,
+    height: 24,
+  },
+  signUpContainer: {
+    alignItems: 'center',
   },
   signUpText: {
-    fontSize: 14,
-    color: '#999999',
+    color: theme.colors.textSecondary,
+    fontSize: theme.fontSizes.sm,
+    fontFamily: 'Poppins_400Regular',
   },
   signUpLink: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#0093D8',
+    color: theme.colors.primary,
+    fontFamily: 'Poppins_600SemiBold',
   },
 });
+
+export default LoginScreen;

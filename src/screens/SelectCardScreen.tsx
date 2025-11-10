@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   SafeAreaView, 
-  ScrollView, 
   TouchableOpacity, 
   Image,
   Dimensions 
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
-import { CardData } from '../types/index';
 
-// Images from Figma SelectCard Screen  
-const backArrowIcon = 'https://www.figma.com/api/mcp/asset/95dda077-c245-46c9-951d-29fac91caffd';
-const cardBackgroundImage = 'https://www.figma.com/api/mcp/asset/9bd6c07b-2b9e-416b-b36e-729e89f6dc3c';
-const mastercardLogo = 'https://www.figma.com/api/mcp/asset/3ba14233-e673-40c7-a0b8-2871921484b9';
-const addCardIcon = 'https://www.figma.com/api/mcp/asset/ff8ac70c-f258-4484-8b49-9a6e2fd67ef6';
+// Exact Figma assets from SelectCard Screen node 424:1119
+const imgVector = "https://www.figma.com/api/mcp/asset/5ee34d2c-8223-4f9b-8b47-6fa18b1a59e0";
+const imgVector1 = "https://www.figma.com/api/mcp/asset/f83b1386-3014-40c5-95f0-0d79d239ada2";
+const imgVector2 = "https://www.figma.com/api/mcp/asset/6deb1cff-41e1-4a20-8f74-db238534e556";
+const imgVector3 = "https://www.figma.com/api/mcp/asset/2e3db8e9-c072-41c7-b557-757d7dcf1fe3";
+const imgVector4 = "https://www.figma.com/api/mcp/asset/f88dfc4d-b852-418c-a8b5-00055fc78ce2";
+const imgVector5 = "https://www.figma.com/api/mcp/asset/9dc66eda-f90a-4e1f-a2dc-bfe0fe3c17a3";
+const img = "https://www.figma.com/api/mcp/asset/7f500840-bd73-44cb-9174-f279e32e3975";
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 type SelectCardScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SelectCard'>;
 
@@ -27,97 +28,85 @@ interface SelectCardScreenProps {
   navigation: SelectCardScreenNavigationProp;
 }
 
+// Back Button Component
+const BackButton = ({ onPress }: { onPress: () => void }) => (
+  <TouchableOpacity onPress={onPress} style={styles.backButton}>
+    <Image source={{ uri: imgVector }} style={styles.backIcon} />
+  </TouchableOpacity>
+);
+
+// Mastercard Logo Component
+const LogosMastercard = () => (
+  <View style={styles.mastercardContainer}>
+    <Image source={{ uri: imgVector1 }} style={styles.mastercardBottom} />
+    <Image source={{ uri: imgVector2 }} style={styles.mastercardCenter} />
+    <Image source={{ uri: imgVector3 }} style={styles.mastercardLeft} />
+    <Image source={{ uri: imgVector4 }} style={styles.mastercardRight} />
+  </View>
+);
+
 export const SelectCardScreen: React.FC<SelectCardScreenProps> = ({ navigation }) => {
-  const [selectedCard, setSelectedCard] = useState<string | null>(null);
-
-  const handleContinue = () => {
-    if (selectedCard) {
-      navigation.navigate('CVV');
-    }
-  };
-
   const handleBack = () => {
     navigation.goBack();
+  };
+
+  const handleCardSelect = () => {
+    navigation.navigate('CVV');
+  };
+
+  const handleAddCard = () => {
+    // Navigate to add card flow or handle add card logic
+    console.log('Add new card');
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Header with back button */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-            <Image source={{ uri: backArrowIcon }} style={styles.backIcon} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Seleccionar tarjeta</Text>
-          <View style={styles.headerSpacer} />
+        {/* Decorative Element */}
+        <View style={styles.decorativeElement}>
+          <Image source={{ uri: imgVector5 }} style={styles.decorativeIcon} />
         </View>
 
-        {/* Title */}
-        <Text style={styles.title}>Elige la tarjeta para realizar el pago</Text>
+        {/* Back Button */}
+        <BackButton onPress={handleBack} />
 
-        {/* Cards Section */}
-        <ScrollView style={styles.cardsContainer} showsVerticalScrollIndicator={false}>
-          {/* Main Credit Card */}
-          <TouchableOpacity 
-            style={[styles.cardContainer, selectedCard === 'main' && styles.selectedCard]} 
-            onPress={() => setSelectedCard('main')}
-          >
-            <View style={styles.creditCard}>
-              <Image source={{ uri: cardBackgroundImage }} style={styles.cardBackground} />
-              
-              {/* Card Content Overlay */}
-              <View style={styles.cardOverlay}>
-                <View style={styles.cardHeader}>
-                  <Text style={styles.cardTitle}>Ingresa el alias de tu tarjeta</Text>
-                </View>
-                
+        {/* Main Title */}
+        <Text style={styles.mainTitle}>Selecciona tarjeta</Text>
+
+        {/* Section Title */}
+        <Text style={styles.sectionTitle}>Tarjetas guardadas</Text>
+
+        {/* Cards Container */}
+        <View style={styles.cardsContainer}>
+          {/* Saved Card */}
+          <TouchableOpacity style={styles.savedCard} onPress={handleCardSelect}>
+            <View style={styles.cardContent}>
+              <LogosMastercard />
+              <View style={styles.cardTexts}>
+                <Text style={styles.cardAlias}>Ingresa el alias de tu tarjeta</Text>
                 <Text style={styles.cardNumber}>Ingresa tu número de tarjeta</Text>
-                
-                <View style={styles.cardFooter}>
-                  <View style={styles.expiryContainer}>
-                    <Text style={styles.expiryText}>mm</Text>
-                    <Text style={styles.expirySlash}>/</Text>
-                    <Text style={styles.expiryText}>yyyy</Text>
-                  </View>
-                  
-                  <Image source={{ uri: mastercardLogo }} style={styles.mastercardLogo} />
-                </View>
-                
-                <Text style={styles.cardHolderText}>Ingresa el nombre que aparece en la tarjeta</Text>
               </View>
             </View>
-            
-            {selectedCard === 'main' && (
-              <View style={styles.selectionIndicator} />
-            )}
           </TouchableOpacity>
 
-          {/* Add New Card Option */}
-          <TouchableOpacity 
-            style={[styles.addCardContainer, selectedCard === 'add' && styles.selectedCard]}
-            onPress={() => setSelectedCard('add')}
-          >
+          {/* Add New Card */}
+          <TouchableOpacity style={styles.addCardButton} onPress={handleAddCard}>
             <View style={styles.addCardContent}>
-              <Image source={{ uri: addCardIcon }} style={styles.addCardIcon} />
+              <View style={styles.addCardIcon}>
+                <Image source={{ uri: img }} style={styles.cardIconImage} />
+              </View>
               <Text style={styles.addCardText}>Agregar nueva tarjeta</Text>
+              <View style={styles.arrowContainer}>
+                <Image source={{ uri: imgVector }} style={styles.arrowIcon} />
+              </View>
             </View>
-            
-            {selectedCard === 'add' && (
-              <View style={styles.selectionIndicator} />
-            )}
           </TouchableOpacity>
-        </ScrollView>
+        </View>
 
-        {/* Continue Button */}
-        <TouchableOpacity 
-          style={[styles.continueButton, !selectedCard && styles.disabledButton]} 
-          onPress={handleContinue}
-          disabled={!selectedCard}
-        >
-          <Text style={[styles.continueButtonText, !selectedCard && styles.disabledButtonText]}>
-            Continuar
-          </Text>
-        </TouchableOpacity>
+        {/* Card Icon at bottom */}
+        <View style={styles.bottomCardIcon}>
+          {/* This seems to be a decorative icon based on Figma */}
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -130,174 +119,204 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 16,
+    position: 'relative',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 20,
-    paddingBottom: 16,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backIcon: {
+  // Decorative element positioned absolutely - top left
+  decorativeElement: {
+    position: 'absolute',
+    left: width * 0.0814, // 8.14% from left
+    top: height * 0.5 - 334, // calc(50%+-334px) 
     width: 20,
     height: 20,
-    tintColor: '#013046',
+    zIndex: 1,
   },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#013046',
-    flex: 1,
-    textAlign: 'center',
+  decorativeIcon: {
+    width: '105%', // inset [-2.5%]
+    height: '105%',
+    position: 'absolute',
+    left: '-2.5%',
+    top: '-2.5%',
   },
-  headerSpacer: {
-    width: 40,
+  // Back button
+  backButton: {
+    position: 'absolute',
+    left: width * 0.0814, // matching decorative element
+    top: 60, // approximate positioning
+    width: 20,
+    height: 20,
+    zIndex: 2,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: '700',
-    color: '#013046',
-    textAlign: 'center',
-    marginBottom: 32,
-    paddingHorizontal: 16,
-  },
-  cardsContainer: {
-    flex: 1,
-    marginBottom: 20,
-  },
-  cardContainer: {
-    marginBottom: 20,
-    position: 'relative',
-  },
-  selectedCard: {
-    borderWidth: 2,
-    borderColor: '#026795',
-    borderRadius: 16,
-  },
-  creditCard: {
-    height: 200,
-    borderRadius: 16,
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  cardBackground: {
+  backIcon: {
     width: '100%',
     height: '100%',
-    position: 'absolute',
-    resizeMode: 'cover',
+    // Using exact inset from Figma: inset-[14.65%_13.22%_14.65%_7.74%]
+    marginTop: '14.65%',
+    marginRight: '13.22%', 
+    marginBottom: '14.65%',
+    marginLeft: '7.74%',
   },
-  cardOverlay: {
+  // Main title
+  mainTitle: {
+    position: 'absolute',
+    top: 74,
+    left: '50%',
+    transform: [{ translateX: -width * 0.5 }],
+    fontSize: 26,
+    fontFamily: 'Poppins_700Bold',
+    color: '#013046',
+    textAlign: 'center',
+    letterSpacing: -0.52,
+  },
+  // Section title
+  sectionTitle: {
+    position: 'absolute',
+    left: '25%',
+    transform: [{ translateX: -82.25 }], // left-[calc(25%+-82.25px)]
+    top: height * 0.5 - 292, // top-[calc(50%+-292px)]
+    fontSize: 17,
+    fontFamily: 'Poppins_600SemiBold',
+    color: '#026795',
+    letterSpacing: -0.34,
+  },
+  // Cards container
+  cardsContainer: {
+    position: 'absolute',
+    left: 17,
+    top: height * 0.5 - 258, // top-[calc(50%+-258px)]
+    width: 360,
+    height: 263,
+  },
+  // Saved card (Mastercard)
+  savedCard: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-    padding: 20,
-    justifyContent: 'space-between',
+    height: '22.43%', // bottom-[77.57%] means height is 22.43%
+    backgroundColor: '#E6F3F9',
+    borderRadius: 5,
+    shadowColor: 'rgba(1,48,70,0.3)',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 3,
+    elevation: 4,
   },
-  cardHeader: {
-    alignItems: 'flex-start',
+  cardContent: {
+    flexDirection: 'row',
+    padding: 10,
+    alignItems: 'center',
   },
-  cardTitle: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#FFFFFF',
+  // Mastercard logo container
+  mastercardContainer: {
+    width: 60, // approximate size based on aspect ratio and positioning
+    height: 46,
+    position: 'relative',
+    left: '4.17%',
+    marginRight: 15,
+  },
+  mastercardBottom: {
+    position: 'absolute',
+    top: '84.72%',
+    left: '5.06%',
+    right: '4.9%',
+    bottom: '0.28%',
+  },
+  mastercardCenter: {
+    position: 'absolute',
+    top: '8.49%',
+    left: '36.44%',
+    right: '36.54%',
+    bottom: '29.07%',
+  },
+  mastercardLeft: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: '50.09%',
+    bottom: '20.57%',
+  },
+  mastercardRight: {
+    position: 'absolute',
+    top: 0,
+    left: '49.99%',
+    right: '0.1%',
+    bottom: '20.57%',
+  },
+  // Card texts
+  cardTexts: {
+    flex: 1,
+    marginLeft: '21.11%', // positioning from Figma
+  },
+  cardAlias: {
+    fontSize: 13,
+    fontFamily: 'Montserrat_700Bold',
+    color: '#025277',
+    lineHeight: 19.5, // lineHeight 1.5 * fontSize
+    marginBottom: 4,
   },
   cardNumber: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#FFFFFF',
-    marginTop: 20,
+    fontSize: 13,
+    fontFamily: 'Montserrat_700Bold',
+    color: '#013046',
+    lineHeight: 19.5,
   },
-  cardFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  expiryContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  expiryText: {
-    fontSize: 11,
-    color: '#FFFFFF',
-    fontWeight: '400',
-  },
-  expirySlash: {
-    fontSize: 11,
-    color: '#FFFFFF',
-    marginHorizontal: 2,
-  },
-  mastercardLogo: {
-    width: 32,
-    height: 20,
-  },
-  cardHolderText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    marginTop: 8,
-  },
-  selectionIndicator: {
+  // Add card button
+  addCardButton: {
     position: 'absolute',
-    top: 12,
-    right: 12,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#026795',
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
-  },
-  addCardContainer: {
-    height: 80,
-    borderWidth: 2,
-    borderColor: '#E5E5E5',
-    borderStyle: 'dashed',
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    position: 'relative',
+    top: '221.29%', // positioning from bottom-[-143.73%] top-[221.29%]
+    left: 0,
+    right: 0,
+    height: '22.43%', // same height as saved card
+    backgroundColor: '#E6F3F9',
+    borderRadius: 5,
+    shadowColor: 'rgba(1,48,70,0.3)',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 3,
+    elevation: 4,
   },
   addCardContent: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    height: '100%',
   },
   addCardIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 8,
-    tintColor: '#026795',
+    width: 24,
+    height: 24,
+    marginLeft: '5.28%',
+  },
+  cardIconImage: {
+    width: '100%',
+    height: '100%',
+    tintColor: '#013046',
   },
   addCardText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#026795',
+    flex: 1,
+    fontSize: 17,
+    fontFamily: 'Poppins_600SemiBold',
+    color: '#013046',
+    letterSpacing: -0.34,
+    marginLeft: 15,
   },
-  continueButton: {
-    backgroundColor: '#006B9E',
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-    marginBottom: 20,
+  arrowContainer: {
+    width: 18,
+    height: 36,
+    transform: [{ rotate: '180deg' }, { scaleY: -1 }], // rotate and flip
+    marginRight: '5%',
   },
-  disabledButton: {
-    backgroundColor: '#E5E5E5',
+  arrowIcon: {
+    width: '100%',
+    height: '100%',
   },
-  continueButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-  disabledButtonText: {
-    color: '#999999',
+  // Bottom card icon (decorative)
+  bottomCardIcon: {
+    position: 'absolute',
+    left: 80,
+    top: height * 0.5 + 106, // top-[calc(50%+106px)]
+    width: 24,
+    height: 24,
   },
 });
