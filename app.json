@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CMAS App",
-    "slug": "cmas-app", 
+    "slug": "cmas-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",

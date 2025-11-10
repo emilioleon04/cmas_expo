@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
+import BackButton from '../components/backButton';
 
 // Exact Figma assets from CVV Screen node 424:1190
 const img31 = "https://www.figma.com/api/mcp/asset/a77b2269-4770-4efb-8822-c4704999e5fa";
@@ -62,9 +63,7 @@ export const CVVScreen: React.FC<CVVScreenProps> = ({ navigation }) => {
       <View style={styles.content}>
         {/* Header Section */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-            <Text style={styles.backArrow}>←</Text>
-          </TouchableOpacity>
+          <BackButton size={22} />
           <Text style={styles.title}>Ingresa el CVV</Text>
         </View>
 

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { 
   View, 
@@ -10,6 +11,7 @@ import {
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
+import BackButton from '../components/backButton';
 
 // Exact Figma assets from SelectCard Screen node 424:1119
 const imgVector = "https://www.figma.com/api/mcp/asset/5ee34d2c-8223-4f9b-8b47-6fa18b1a59e0";
@@ -27,13 +29,6 @@ type SelectCardScreenNavigationProp = StackNavigationProp<RootStackParamList, 'S
 interface SelectCardScreenProps {
   navigation: SelectCardScreenNavigationProp;
 }
-
-// Back Button Component
-const BackButton = ({ onPress }: { onPress: () => void }) => (
-  <TouchableOpacity onPress={onPress} style={styles.backButton}>
-    <Image source={{ uri: imgVector }} style={styles.backIcon} />
-  </TouchableOpacity>
-);
 
 // Mastercard Logo Component
 const LogosMastercard = () => (
@@ -68,8 +63,7 @@ export const SelectCardScreen: React.FC<SelectCardScreenProps> = ({ navigation }
         </View>
 
         {/* Back Button */}
-        <BackButton onPress={handleBack} />
-
+        <BackButton size={22} />
         {/* Main Title */}
         <Text style={styles.mainTitle}>Selecciona tarjeta</Text>
 
@@ -161,7 +155,7 @@ const styles = StyleSheet.create({
     top: 74,
     left: '50%',
     transform: [{ translateX: -width * 0.5 }],
-    fontSize: 48,
+    fontSize: 26,
     fontFamily: 'Poppins_700Bold',
     color: '#013046',
     textAlign: 'center',
