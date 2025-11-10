@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     top: 74,
     left: '50%',
     transform: [{ translateX: -width * 0.5 }],
-    fontSize: 26,
+    fontSize: 48,
     fontFamily: 'Poppins_700Bold',
     color: '#013046',
     textAlign: 'center',
